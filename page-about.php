@@ -11,7 +11,6 @@
 
 get_header();
 get_sidebar();
-cc_sitemap();
 
 ?>
 <p>Text goes right here, says the imp! About!</p>

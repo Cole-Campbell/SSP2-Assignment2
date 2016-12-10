@@ -9,6 +9,26 @@ Author: Cole Campbell
 Author URI: http://www.colecampbellportfolio.com
 */
 
-html{
-	margin-top: 0px !important;
+body{padding:0;}
+
+.jumbotron, .navbar{
+	margin-bottom:0;
+	padding-top:0;
+	padding-bottom:0;	
+}
+
+hr{
+	color:#333;
+}
+
+footer{
+	text-align: center;
+}
+
+.fa-heart{
+	color:#333;
+}
+
+.fa-heart:hover{
+	color:#cc504a;
 }
