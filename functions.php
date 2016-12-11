@@ -1,5 +1,8 @@
 <?php
-#Sitewide functions
+#Removes the default WP Admin bar
+add_filter('show_admin_bar', '__return_false');
+
+#Registers the menu within the backend as a main menu for the website
 function register_my_menu() {
 	register_nav_menu('header-menu',__('HeaderMenu'));
 }
@@ -10,37 +13,18 @@ if (function_exists('register_sidebar')){
 	register_sidebar(array('name'=>'sidebar', 'id'=>'sidebar'));
 }
 
-function get_user_role() {
-	global $wp_roles;
-	$currentrole='';
-
-	foreach ($wp_roles->role_names as $role => $name) {
-		if (current_user_can($role)){
-			$currentrole = $role;
-		}
-	}
-	return $currentrole;
-}
 
 function check_user_logged_in(){
 	# Checking to see if the user is logged in. If they are not then they will be redirected to the homepage to ensure security.
-
-	if(is_user_logged_in()){
-		the_content();
+	if(!is_user_logged_in()){
+		header('Location: ' . wp_login_url());
 	} else {	
-		header('Location: index.php');
-		#header('Location: ' . wp_login_url());
-		exit;
-		#echo '<p>Goodbye!</p>';
+		
+		#exit;
 	}
 }
 
-function log_out_user(){
-	#wp_logout();
-	wp_logout_url('index.php');
-}
-
-
+#If the post passed is addExpense then the function below is run. The data passed is sanitized and then pushed into the database.
 if(isset($_POST["addExpense"])){
 	
 	$expense = (filter_var($_POST["expense"],FILTER_SANITIZE_NUMBER_INT));
@@ -49,7 +33,6 @@ if(isset($_POST["addExpense"])){
 	$data = get_user_meta($id);
 	$name = $data['nickname'][0];
 
-	//$website = 'localhost/LIT/SSP2/!Week%208/wordpress';
 
 	$wpdb->insert ('expenses',
 	array(
@@ -58,13 +41,11 @@ if(isset($_POST["addExpense"])){
 		'amount' => $expense,
 		'status' => 'Pending',
 		'type' => $type
-
 		)
 	);
 }
 
-add_filter('show_admin_bar', '__return_false');
-
+#If the post passed is register, then the function below is run. The data is sanitized and then pushed to the database. Error may occur if the name is taken.
 if(isset($_POST["register"])){
 	sanitize_text_field( $_POST['login_name'] );
 	sanitize_text_field( $_POST['pass_word'] );
@@ -86,31 +67,11 @@ if(isset($_POST["register"])){
         $pass = "You are now registered - Login button is above.";
     }
     else{
-        $fail = "The information you have added is invalid.";
+        $fail = "Username is taken";
     }
 }
 
-
-/*if(isset($_POST["statusUpdate"])){
-	$status = $_POST["status"];
-	$id = $_POST['expenseID'];
-
-	$wpdb->update(
-	'expenses',
-	array (
-		'status' => $status
-		),
-	array( 'id' => $id),
-	array(
-		'%s' //Value 1 data type
-		)
-);
-
-}*/
-
-
-
-
+#Functions which approve, reject and delete expenses
 if(isset($_POST['approved'])){
 
 	$id = $_POST['expenseID'];
@@ -154,23 +115,6 @@ $wpdb->delete(
 		'%s' //Value 1 data type
 		)
 );
-}
-
-/*Attempting to create login
-function custom_login() {
-	$creds = array();
-	$creds['user_login'] = 'example';
-	$creds['user_password'] = 'plaintextpw';
-	$creds['remember'] = true;
-	$user = wp_signon( $creds, false );
-	if ( is_wp_error($user) )
-		echo $user->get_error_message();
-}*/
-
-#Removes the Admin bar provided by Wordpress, as it was coming up blank 
-add_action('get_header', 'remove_admin_login_header');
-function remove_admin_login_header() {
-	remove_action('wp_head', '_admin_bar_bump_cb');
 }
 
 ?>

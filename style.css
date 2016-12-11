@@ -9,22 +9,29 @@ Author: Cole Campbell
 Author URI: http://www.colecampbellportfolio.com
 */
 
+/*Reduce any padding within the body to 0*/
 body{padding:0;}
 
+/*Removes all bottom margin, padding and top padding from the jumbotron and the navbar to
+produce a cleaner frontend*/
 .jumbotron, .navbar{
 	margin-bottom:0;
 	padding-top:0;
 	padding-bottom:0;	
 }
 
+/*Change to the HR element as it was too light for the design*/
 hr{
 	color:#333;
 }
 
+/*Centers the footer text*/
 footer{
 	text-align: center;
 }
 
+/*Changes the colour of the fontawesome fa-heart class. Personal design/branding.
+Hover is changed to personal branding colour.*/
 .fa-heart{
 	color:#333;
 }

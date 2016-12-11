@@ -1,8 +1,9 @@
 <?php 
 #Controls the display of the front page
+#Gets the header.php file using the WP function
 get_header();
-//get_sidebar();
 
+#Below is HTML which creates most of the frontpage using the Bootstrap framework.
 ?>
 </div>
 <div class='jumbotron' id="mainDisplay">
@@ -12,17 +13,19 @@ get_header();
 <div class='container'>
 
 <?php
+#If content can be found associated to the frontpage backend, then it will add in the content.
 if (have_posts()) : while (have_posts()) : the_post(); ?>
 <h1> <?php the_title(); ?> </h1>
 <?php the_content();?>
 <?php endwhile; endif; ?>
 
 <?php
+#Registration form. This section will display a message depending on if the user's content is successfully added into the database or not
 echo "<h2>Register</h2>
 	<p style='color:red;'>".$fail."</p>
 	<p style='color:green;'>".$pass."</p>";
 
-#Register
+#Registration Form. This form allows the user to input their username/password and submit it into the database unless the username is taken.
 echo 
 		'<form method="post" class="form-group">
 			<label>Username</label>
